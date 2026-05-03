@@ -959,18 +959,20 @@ function submitLead() {
   const total = questions.length;
   const pct   = Math.round((score / total) * 100);
 
-  // ── Determine overall level (cumulative — must pass all lower levels) ──
+  // ── Determine overall level (only valid when ALL levels tested) ───────
+  const isFullTest = activeLevel === "ALL";
   let overallLevel = "A1";
-  for (let i = 0; i < levels.length; i++) {
-    const l = levels[i];
-    const s = stats[l];
-    if (s.total === 0) continue;
-    const p = Math.round((s.correct / s.total) * 100);
-    if (p >= 60) {
-      overallLevel = l;
-    } else {
-      break;
+
+  if (isFullTest) {
+    for (let i = 0; i < levels.length; i++) {
+      const l = levels[i];
+      const s = stats[l];
+      if (s.total === 0) continue;
+      const p = Math.round((s.correct / s.total) * 100);
+      if (p >= 60) { overallLevel = l; } else { break; }
     }
+  } else {
+    overallLevel = activeLevel;
   }
 
   const levelDescs = {
@@ -981,7 +983,9 @@ function submitLead() {
     C1: "You're close to mastery. The remaining challenge is precision — mixed conditionals, inversion and register control.",
     C2: "Outstanding. You demonstrate near-native command of English verb tenses across all levels of complexity."
   };
-  const overallDesc = levelDescs[overallLevel];
+  const overallDesc = isFullTest
+    ? levelDescs[overallLevel]
+    : `This result reflects your performance on ${activeLevel} questions only. To get your full CEFR diagnosis, take the All Levels test.`;
 
   // ── Emoji & message ────────────────────────────────────────────────────
   let emoji = "💪", msg = "Every mistake is a step forward. Keep going!";
@@ -1027,8 +1031,8 @@ function submitLead() {
 
   // Diagnosis summary box
   document.getElementById("diagnosisBox").innerHTML = `
-    <div class="diag-headline">🎯 Your current level</div>
-    <div class="diag-level-result">${overallLevel} ${levels.indexOf(overallLevel) < levels.length - 1 ? "→ " + levels[levels.indexOf(overallLevel) + 1] : "— Advanced"}</div>
+    <div class="diag-headline">🎯 ${isFullTest ? "Your current level" : activeLevel + " level result"}</div>
+    <div class="diag-level-result">${isFullTest ? overallLevel + (levels.indexOf(overallLevel) < levels.length - 1 ? " → " + levels[levels.indexOf(overallLevel) + 1] : " — Advanced") : activeLevel + " — " + pct + "% correct"}</div>
     <div class="diag-desc">${overallDesc}</div>
   `;
 
