@@ -1033,7 +1033,7 @@ function submitLead() {
   document.getElementById("resultsScreen").classList.add("show");
 
   // ── Send to Google Sheets ──────────────────────────────────────────────
-  const SHEETS_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+  const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxAYah2eBBozL0bjFMCkgOceMXPsu6hGMCYXa1BemomW1HxLtIONpNtuK_7vYkk3K8/exec";
   const levelSummary = levels.map(l => {
     const s = stats[l];
     return s.total > 0 ? `${l}: ${s.correct}/${s.total}` : null;
