@@ -1039,44 +1039,22 @@ function submitLead() {
     return s.total > 0 ? `${l}: ${s.correct}/${s.total}` : null;
   }).filter(Boolean).join(" | ");
 
-  // ── Send to Google Sheets via hidden form (no CORS issues) ───────────
+  // ── Send to Google Sheets via GET params (proven method) ─────────────
   const SHEETS_URL = "https://script.google.com/macros/s/AKfycbxAYah2eBBozL0bjFMCkgOceMXPsu6hGMCYXa1BemomW1HxLtIONpNtuK_7vYkk3K8/exec";
 
-  const iframe = document.createElement("iframe");
-  iframe.name = "hidden_iframe";
-  iframe.style.display = "none";
-  document.body.appendChild(iframe);
-
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = SHEETS_URL;
-  form.target = "hidden_iframe";
-  form.style.display = "none";
-
-  const fields = {
+  const params = new URLSearchParams({
     name, email, phone,
     score: `${score}/${total}`,
     percent: `${pct}%`,
     level: overallLevel,
     breakdown: levelSummary,
     date: new Date().toLocaleString("pt-BR")
-  };
-
-  Object.entries(fields).forEach(([key, value]) => {
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = value;
-    form.appendChild(input);
   });
 
-  document.body.appendChild(form);
-  form.submit();
-
-  setTimeout(() => {
-    document.body.removeChild(form);
-    document.body.removeChild(iframe);
-  }, 5000);
+  fetch(`${SHEETS_URL}?${params}`, {
+    method: "GET",
+    mode: "no-cors"
+  }).catch(() => {});
 }
 
 function restartQuiz() {
