@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rick's Time Machine — Verb Tenses in English</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #042039;
+    --surface: #072d50;
+    --surface2: #0a3a63;
+    --border: #1a5080;
+    --accent: #e8c56d;
+    --accent2: #6db5e8;
+    --accent3: #8de86d;
+    --text: #e8eaf0;
+    --muted: #7aabcc;
+    --danger: #e86d6d;
+    --A1: #4ade80; --A2: #86efac;
+    --B1: #60a5fa; --B2: #93c5fd;
+    --C1: #f472b6; --C2: #e879f9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; z-index: 1; }
+
+  /* Header */
+  header { text-align: center; padding: 3rem 0 2rem; }
+  header .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+  header h1 .h1-icon {
+    display: block;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    margin-bottom: 0.1rem;
+  }
+  header h1 .h1-text {
+    background: linear-gradient(135deg, #e8eaf0 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 300;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* Level selector */
+  .level-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+  .level-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.45rem 1.1rem;
+    border-radius: 2rem;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .level-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .level-btn.active { color: #042039; font-weight: 600; border-color: transparent; }
+  .level-btn[data-level="ALL"].active { background: var(--accent); }
+  .level-btn[data-level="A1"].active { background: var(--A1); }
+  .level-btn[data-level="A2"].active { background: var(--A2); }
+  .level-btn[data-level="B1"].active { background: var(--B1); }
+  .level-btn[data-level="B2"].active { background: var(--B2); }
+  .level-btn[data-level="C1"].active { background: var(--C1); }
+  .level-btn[data-level="C2"].active { background: var(--C2); }
+
+  /* Progress bar */
+  .progress-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+  .progress-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .score-text {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent3);
+    white-space: nowrap;
+  }
+
+  /* Question card */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    animation: fadeSlide 0.35s ease;
+  }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+  .q-level-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.3rem;
+    letter-spacing: 0.08em;
+  }
+  .q-tense {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .q-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-left: auto;
+  }
+
+  .question-text {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+  .question-text .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    padding: 0 0.3rem;
+  }
+
+  /* Options */
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+  @media (max-width: 520px) { .options { grid-template-columns: 1fr; } }
+
+  .option-btn {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 0.65rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.18s;
+    line-height: 1.4;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .option-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .option-btn .opt-letter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    width: 1.4rem; height: 1.4rem;
+    border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.18s;
+  }
+  .option-btn:hover:not(:disabled) .opt-letter { background: var(--accent); color: #042039; }
+  .option-btn.correct { border-color: var(--accent3); color: var(--accent3); background: rgba(141,232,109,0.07); }
+  .option-btn.correct .opt-letter { background: var(--accent3); color: #042039; }
+  .option-btn.wrong { border-color: var(--danger); color: var(--danger); background: rgba(232,109,109,0.07); }
+  .option-btn.wrong .opt-letter { background: var(--danger); color: #fff; }
+  .option-btn:disabled { cursor: not-allowed; opacity: 0.7; }
+
+  /* Feedback box */
+  .feedback-box {
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.4rem;
+    border-radius: 0.75rem;
+    border-left: 3px solid;
+    animation: fadeSlide 0.3s ease;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.correct-fb { border-color: var(--accent3); background: rgba(141,232,109,0.06); }
+  .feedback-box.wrong-fb { border-color: var(--danger); background: rgba(232,109,109,0.06); }
+  .feedback-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .feedback-box.correct-fb .feedback-title { color: var(--accent3); }
+  .feedback-box.wrong-fb .feedback-title { color: var(--danger); }
+  .feedback-content {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .feedback-example {
+    margin-top: 0.6rem;
+    font-style: italic;
+    color: var(--accent2);
+    font-size: 0.88rem;
+  }
+
+  /* AI Feedback loading */
+  .ai-feedback-wrap {
+    margin-top: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 0.65rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: none;
+  }
+  .ai-feedback-wrap.show { display: block; }
+  .ai-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .ai-label::before {
+    content: '◆';
+    animation: pulse 1.4s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .ai-text { font-size: 0.88rem; line-height: 1.7; color: var(--text); min-height: 1.5rem; }
+
+  /* Next button */
+  .next-btn {
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0.85rem;
+    border-radius: 0.65rem;
+    border: none;
+    background: linear-gradient(135deg, var(--accent) 0%, #d4a843 100%);
+    color: #0d0f14;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: none;
+    transition: opacity 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .next-btn:hover { opacity: 0.88; }
+  .next-btn.show { display: block; }
+
+  /* Results screen */
+  .results-screen {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    display: none;
+    animation: fadeSlide 0.4s ease;
+  }
+  .results-screen.show { display: block; }
+  .results-emoji { font-size: 4rem; margin-bottom: 1rem; }
+  .results-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent);
+  }
+  .results-screen p { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.4rem; }
+  .results-big {
+    font-family: 'DM Mono', monospace;
+    font-size: 3.5rem;
+    font-weight: 500;
+    color: var(--text);
+    margin: 1rem 0;
+  }
+  .restart-btn {
+    margin-top: 1.5rem;
+    padding: 0.8rem 2rem;
+    border-radius: 0.65rem;
+    border: 1.5px solid var(--accent);
+    background: transparent;
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .restart-btn:hover { background: var(--accent); color: #042039; }
+
+  /* Lead capture screen */
+  .capture-screen {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    display: none;
+    animation: fadeSlide 0.4s ease;
+  }
+  .capture-screen.show { display: block; }
+  .capture-screen .capture-icon { font-size: 3rem; margin-bottom: 1rem; }
+  .capture-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .capture-screen .capture-sub {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .capture-field {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 0.65rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.75rem;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .capture-field:focus { border-color: var(--accent); }
+  .capture-field::placeholder { color: var(--muted); }
+  .capture-submit {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.9rem;
+    border-radius: 0.65rem;
+    border: none;
+    background: linear-gradient(135deg, var(--accent) 0%, #d4a843 100%);
+    color: #042039;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .capture-submit:hover { opacity: 0.88; }
+  .capture-privacy {
+    margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Enhanced results screen */
+  .results-screen { text-align: center; padding: 2rem 1.5rem; background: var(--surface); border: 1px solid var(--border); border-radius: 1rem; display: none; animation: fadeSlide 0.4s ease; }
+  .results-screen.show { display: block; }
+  .results-name { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--accent); margin-bottom: 0.25rem; }
+  .results-score-wrap { margin: 1.25rem 0; }
+  .results-big { font-family: 'DM Mono', monospace; font-size: 3rem; font-weight: 500; color: var(--text); }
+  .results-pct { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+  .results-msg { color: var(--muted); font-size: 0.92rem; margin-bottom: 1.5rem; }
+
+  /* Diagnosis grid */
+  .diagnosis-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+  }
+  .diagnosis-grid { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; text-align: left; }
+  .diag-row { display: flex; align-items: center; gap: 0.75rem; }
+  .diag-level {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 2rem;
+    flex-shrink: 0;
+    text-align: center;
+    padding: 0.2rem 0.3rem;
+    border-radius: 0.3rem;
+    color: #042039;
+  }
+  .diag-bar-outer { flex: 1; height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .diag-bar-inner { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+  .diag-pct { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--muted); width: 2.5rem; text-align: right; flex-shrink: 0; }
+  .diag-status { font-size: 0.72rem; width: 5.5rem; flex-shrink: 0; text-align: right; }
+
+  /* Diagnosis summary box */
+  .diagnosis-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.4rem;
+    text-align: left;
+    margin-bottom: 1.5rem;
+  }
+  .diagnosis-box .diag-headline {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 0.5rem;
+  }
+  .diagnosis-box .diag-level-result {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .diagnosis-box .diag-desc {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  .site-footer {
+    text-align: center;
+    padding: 2.5rem 0 1.5rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+  .site-footer .footer-brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.3rem;
+  }
+  .site-footer .footer-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="eyebrow">Rick's Time Machine · CEFR A1 → C2</div>
+    <h1><span class="h1-icon">⏱️</span><span class="h1-text">Verb Tenses<br>in English</span></h1>
+    <p>Travel through past, present and future — master every verb tense with instant AI-powered feedback.</p>
+  </header>
+
+  <div class="level-selector" id="levelSelector">
+    <button class="level-btn active" data-level="ALL">All Levels</button>
+    <button class="level-btn" data-level="A1">A1</button>
+    <button class="level-btn" data-level="A2">A2</button>
+    <button class="level-btn" data-level="B1">B1</button>
+    <button class="level-btn" data-level="B2">B2</button>
+    <button class="level-btn" data-level="C1">C1</button>
+    <button class="level-btn" data-level="C2">C2</button>
+  </div>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar" style="width:0%"></div></div>
+    <span class="progress-text" id="progressText">0 / 0</span>
+    <span class="score-text" id="scoreText">✓ 0</span>
+  </div>
+
+  <div id="questionArea"></div>
+
+  <!-- Lead Capture Screen -->
+  <div class="capture-screen" id="captureScreen">
+    <div class="capture-icon">📊</div>
+    <h2>Your result is ready!</h2>
+    <p class="capture-sub">Fill in your details below to receive your full CEFR diagnostic — broken down by level and tense.</p>
+    <input class="capture-field" type="text" id="leadName" placeholder="Full name" autocomplete="name" />
+    <input class="capture-field" type="email" id="leadEmail" placeholder="E-mail" autocomplete="email" />
+    <input class="capture-field" type="tel" id="leadPhone" placeholder="WhatsApp (with country code, e.g. +55 11 99999-9999)" autocomplete="tel" />
+    <button class="capture-submit" onclick="submitLead()">See my result →</button>
+    <div class="capture-privacy">🔒 Your data is used only to send your diagnostic. No spam.</div>
+  </div>
+
+  <!-- Results Screen -->
+  <div class="results-screen" id="resultsScreen">
+    <div class="results-name" id="resultsName"></div>
+    <div id="resultsEmoji" style="font-size:2.5rem;margin:0.5rem 0;">🎉</div>
+    <div class="results-score-wrap">
+      <div class="results-big" id="resultsBig">—</div>
+      <div class="results-pct" id="resultsPct"></div>
+    </div>
+    <div class="results-msg" id="resultsMsg"></div>
+    <div class="diagnosis-title">📊 Your CEFR Diagnostic</div>
+    <div class="diagnosis-grid" id="diagnosisGrid"></div>
+    <div class="diagnosis-box" id="diagnosisBox"></div>
+    <button class="restart-btn" onclick="restartQuiz()">Practice Again</button>
+  </div>
+  <footer class="site-footer">
+    <div class="footer-brand">Rick's Time Machine</div>
+    <div class="footer-sub">Verb Tenses in English · CEFR A1 → C2 · Powered by Fluent Pro</div>
+  </footer>
+</div>
+
+<script>
+const ALL_QUESTIONS = [
+  // ─── A1: Simple Present ──────────────────────────────────────────────────
+  { level:"A1", tense:"Simple Present", q:"She ___ to school every day.", options:["go","goes","going","went"], answer:1, feedback:"Use the 3rd person singular -s with he/she/it in the Simple Present.", example:"He works. She goes. It rains." },
+  { level:"A1", tense:"Simple Present", q:"They ___ football on Sundays.", options:["plays","playing","play","played"], answer:2, feedback:"For I/you/we/they, use the base form of the verb in Simple Present.", example:"We play. They run." },
+  { level:"A1", tense:"Simple Present", q:"I ___ coffee every morning.", options:["drinks","drink","drank","drinking"], answer:1, feedback:"'I' takes the base form — no -s ending.", example:"I drink coffee. You eat bread." },
+  { level:"A1", tense:"Simple Present", q:"The dog ___ a lot.", options:["bark","barked","barks","barking"], answer:2, feedback:"Animals are 3rd person singular — add -s to the verb.", example:"The cat sleeps. The dog barks." },
+  { level:"A1", tense:"Simple Present", q:"We ___ in Brazil.", options:["lives","lived","live","living"], answer:2, feedback:"'We' is plural — use the base form of the verb.", example:"We live here. They work there." },
+
+  // ─── A1: Simple Present Negative/Question ────────────────────────────────
+  { level:"A1", tense:"Simple Present", q:"She ___ like vegetables.", options:["don't","doesn't","not","isn't"], answer:1, feedback:"With she/he/it, use 'doesn't' + base verb for negatives.", example:"She doesn't eat meat. He doesn't play games." },
+  { level:"A1", tense:"Simple Present", q:"___ you speak English?", options:["Are","Does","Do","Is"], answer:2, feedback:"Use 'Do' for questions with I/you/we/they in Simple Present.", example:"Do you live here? Do they work?" },
+
+  // ─── A1: Present Continuous ──────────────────────────────────────────────
+  { level:"A1", tense:"Present Continuous", q:"She ___ now.", options:["study","studies","is studying","studied"], answer:2, feedback:"Present Continuous = am/is/are + verb-ing. It shows action happening right now.", example:"She is studying. They are eating." },
+  { level:"A1", tense:"Present Continuous", q:"They ___ at the moment.", options:["are working","work","worked","is working"], answer:0, feedback:"'They' uses 'are' as the auxiliary in Present Continuous.", example:"They are working. We are resting." },
+  { level:"A1", tense:"Present Continuous", q:"I ___ to music right now.", options:["am listen","listening","am listening","listen"], answer:2, feedback:"Present Continuous needs: am/is/are + verb-ing. Don't forget the auxiliary!", example:"I am listening. He is cooking." },
+
+  // ─── A1: Simple Past ─────────────────────────────────────────────────────
+  { level:"A1", tense:"Simple Past", q:"She ___ TV last night.", options:["watch","watches","watching","watched"], answer:3, feedback:"'Last night' tells us the action is finished and in the past — use Simple Past. Regular verbs: add -ed.", example:"I watched TV last night. She cooked dinner yesterday." },
+  { level:"A1", tense:"Simple Past", q:"He ___ to work yesterday.", options:["go","went","goes","gone"], answer:1, feedback:"'Yesterday' signals a completed past action. 'go' is irregular — its Simple Past form is 'went'.", example:"He went to work yesterday. She went to school last Monday." },
+  { level:"A1", tense:"Simple Past", q:"We ___ pizza for dinner last Friday.", options:["eat","eating","eats","ate"], answer:3, feedback:"'Last Friday' marks a specific, finished moment in the past. 'eat' is irregular — its past form is 'ate'.", example:"We ate pizza last Friday. They drank water at the meeting yesterday." },
+  { level:"A1", tense:"Simple Past", q:"She ___ happy at the party last weekend.", options:["is","are","were","was"], answer:3, feedback:"'Last weekend' shows the feeling is finished and past. Use 'was' for I/he/she/it, 'were' for you/we/they.", example:"She was happy last weekend. He was tired after the meeting yesterday." },
+
+  // ─── A2: Simple Past Negative ────────────────────────────────────────────
+  { level:"A2", tense:"Simple Past", q:"I ___ see the movie last night.", options:["didn't","don't","wasn't","weren't"], answer:0, feedback:"'Last night' confirms it's finished past. Negative: didn't + base verb (not the past form!).", example:"I didn't go yesterday. She didn't call last Monday." },
+  { level:"A2", tense:"Simple Past", q:"___ they arrive on time this morning?", options:["Are","Did","Were","Do"], answer:1, feedback:"'This morning' is a completed time frame — use 'Did' to form Simple Past questions.", example:"Did you eat breakfast? Did she call this morning?" },
+
+  // ─── A2: Past Continuous ─────────────────────────────────────────────────
+  { level:"A2", tense:"Past Continuous", q:"She ___ when I called.", options:["slept","sleeps","was sleeping","is sleeping"], answer:2, feedback:"Past Continuous = was/were + verb-ing. It describes an action in progress at a past moment.", example:"She was sleeping. They were eating." },
+  { level:"A2", tense:"Past Continuous", q:"We ___ TV at 8 PM yesterday.", options:["watch","watched","are watching","were watching"], answer:3, feedback:"'We' uses 'were' in the Past Continuous.", example:"We were watching. They were studying." },
+  { level:"A2", tense:"Past Continuous", q:"It ___ when I left.", options:["rained","raining","was raining","rains"], answer:2, feedback:"Past Continuous with 'it' uses 'was + verb-ing' to describe background actions.", example:"It was raining. The wind was blowing." },
+
+  // ─── A2: Future with "going to" ──────────────────────────────────────────
+  { level:"A2", tense:"Future: going to", q:"She ___ travel to Paris next year.", options:["is going to","are going to","go to","going to"], answer:0, feedback:"'going to' future = am/is/are + going to + base verb. For she/he/it, use 'is'.", example:"She is going to travel. He is going to study." },
+  { level:"A2", tense:"Future: going to", q:"They ___ start a new project.", options:["am going to","is going to","are going to","going to"], answer:2, feedback:"'They' uses 'are' with 'going to'.", example:"They are going to start. We are going to finish." },
+  { level:"A2", tense:"Future: going to", q:"Look at those clouds! It ___ rain.", options:["is going to","will","go to","goes to"], answer:0, feedback:"Use 'going to' for predictions based on present evidence (like seeing clouds).", example:"It's going to rain — look at those clouds!" },
+
+  // ─── A2: Future with "will" ──────────────────────────────────────────────
+  { level:"A2", tense:"Future: will", q:"I think it ___ be a great day.", options:["is going to","am going to","will","going"], answer:2, feedback:"Use 'will' for predictions or opinions about the future without present evidence.", example:"I think it will rain. She will probably call." },
+  { level:"A2", tense:"Future: will", q:"'I'm cold.' — 'I ___ close the window.'", options:["am going to","will","am","was"], answer:1, feedback:"Use 'will' for spontaneous decisions made at the moment of speaking.", example:"I'll close the window. I'll help you." },
+
+  // ─── B1: Present Perfect ─────────────────────────────────────────────────
+  { level:"B1", tense:"Present Perfect", q:"I ___ never ___ sushi before.", options:["have / eaten","has / eaten","have / ate","did / eat"], answer:0, feedback:"Present Perfect = have/has + past participle. Use it for life experiences without a specific time.", example:"I have never eaten sushi. She has visited Japan." },
+  { level:"B1", tense:"Present Perfect", q:"She ___ just ___ her report.", options:["has / finished","have / finished","did / finish","has / finish"], answer:0, feedback:"With she/he/it, use 'has' + past participle. 'Just' signals recent action.", example:"She has just finished. He has just arrived." },
+  { level:"B1", tense:"Present Perfect", q:"They ___ here since 2015.", options:["lived","have lived","are living","live"], answer:1, feedback:"Present Perfect with 'since' shows an action that started in the past and continues now.", example:"They have lived here since 2015. She has worked here since March." },
+  { level:"B1", tense:"Present Perfect", q:"How long ___ you ___ English?", options:["have / study","have / studied","did / study","do / study"], answer:1, feedback:"'How long' + Present Perfect asks about duration from a past point to now.", example:"How long have you studied? How long has she worked here?" },
+  { level:"B1", tense:"Present Perfect", q:"He ___ already ___ the dishes.", options:["have / washed","has / washed","did / wash","has / wash"], answer:1, feedback:"'Already' in Present Perfect signals a completed action before the expected time.", example:"He has already washed. She has already left." },
+
+  // ─── B1: Present Perfect vs. Simple Past ─────────────────────────────────
+  { level:"B1", tense:"Present Perfect vs. Past", q:"I ___ her last Tuesday at the conference.", options:["have seen","saw","see","have saw"], answer:1, feedback:"'Last Tuesday' is a specific, finished past time — always use Simple Past, never Present Perfect.", example:"I saw her last Tuesday. He called me two days ago." },
+  { level:"B1", tense:"Present Perfect vs. Past", q:"___ you ever ___ bungee jumping?", options:["Did / go","Have / gone","Have / went","Did / gone"], answer:1, feedback:"Life experiences without a specific time use Present Perfect + 'ever'.", example:"Have you ever gone skydiving? Have they ever visited?" },
+
+  // ─── B1: Past Perfect ────────────────────────────────────────────────────
+  { level:"B1", tense:"Past Perfect", q:"When I arrived, she ___ already ___.", options:["has / left","had / left","have / left","did / leave"], answer:1, feedback:"Past Perfect = had + past participle. It describes an action completed before another past action.", example:"She had left before I arrived. He had eaten when I called." },
+  { level:"B1", tense:"Past Perfect", q:"They ___ never ___ a storm like that before.", options:["had / seen","have / seen","did / see","was / seeing"], answer:0, feedback:"Past Perfect with 'never' emphasizes no previous experience before a past moment.", example:"They had never seen such a storm. She had never tried it." },
+
+  // ─── B1: Future Continuous ───────────────────────────────────────────────
+  { level:"B1", tense:"Future Continuous", q:"This time tomorrow, I ___ on the beach.", options:["will lie","will be lying","am lying","lie"], answer:1, feedback:"Future Continuous = will be + verb-ing. It describes an action in progress at a future time.", example:"This time tomorrow, I will be lying on the beach." },
+  { level:"B1", tense:"Future Continuous", q:"Don't call her at 3 PM — she ___ a meeting at that exact moment.", options:["will have","will be having","is going to have","has"], answer:1, feedback:"Future Continuous = will be + verb-ing. It describes an action in progress at a specific future moment — not just planned, but actively happening then.", example:"Don't call at 3 — she will be having a meeting. They will be traveling at that time." },
+
+  // ─── B1: First Conditional ───────────────────────────────────────────────
+  { level:"B1", tense:"1st Conditional", q:"If it ___, we ___ stay home.", options:["rains / will","rained / will","rains / would","rain / will"], answer:0, feedback:"First Conditional: If + Simple Present, will + base verb. It expresses realistic future possibilities.", example:"If it rains, we will stay home. If she comes, I will tell her." },
+  { level:"B1", tense:"1st Conditional", q:"She will pass if she ___.", options:["studies","will study","studied","would study"], answer:0, feedback:"In the 'if' clause of First Conditional, use Simple Present — never 'will'.", example:"If he works hard, he will succeed." },
+
+  // ─── B2: Present Perfect Continuous ─────────────────────────────────────
+  { level:"B2", tense:"Present Perfect Continuous", q:"She ___ for two hours.", options:["has been running","have been running","is running","has run"], answer:0, feedback:"Present Perfect Continuous = have/has + been + verb-ing. It emphasizes duration up to now.", example:"She has been running for two hours. I have been working all day." },
+  { level:"B2", tense:"Present Perfect Continuous", q:"I ___ here all morning!", options:["waited","have been waiting","am waiting","had waited"], answer:1, feedback:"Present Perfect Continuous expresses frustration or emphasis on duration.", example:"I have been waiting here all morning!" },
+  { level:"B2", tense:"Present Perfect Continuous", q:"They ___ on this project since January.", options:["worked","are working","have been working","had worked"], answer:2, feedback:"'Since' + Present Perfect Continuous = action still ongoing now.", example:"They have been working since January. She has been studying since noon." },
+
+  // ─── B2: Past Perfect Continuous ─────────────────────────────────────────
+  { level:"B2", tense:"Past Perfect Continuous", q:"She was exhausted. She ___ all night.", options:["had been studying","has been studying","was studying","studied"], answer:0, feedback:"Past Perfect Continuous = had been + verb-ing. It shows the duration of a past action before another past event.", example:"She had been studying all night. He had been working for hours when we arrived." },
+  { level:"B2", tense:"Past Perfect Continuous", q:"The road was wet. It ___ for hours.", options:["had been raining","has been raining","was raining","had rained"], answer:0, feedback:"Past Perfect Continuous shows a past ongoing action that explains a past result.", example:"It had been raining for hours — that's why the road was wet." },
+
+  // ─── B2: Second Conditional ──────────────────────────────────────────────
+  { level:"B2", tense:"2nd Conditional", q:"If I ___ a million dollars, I ___ travel the world.", options:["have / will","had / would","have / would","had / will"], answer:1, feedback:"Second Conditional: If + Simple Past, would + base verb. It expresses hypothetical or unlikely situations.", example:"If I had a million dollars, I would travel. If she were here, she would help." },
+  { level:"B2", tense:"2nd Conditional", q:"If she ___ harder, she ___ get the promotion.", options:["works / will","worked / would","worked / will","works / would"], answer:1, feedback:"The 'if' clause uses Simple Past; the main clause uses 'would + base verb'.", example:"If he worked harder, he would succeed." },
+  { level:"B2", tense:"2nd Conditional", q:"If I ___ you, I ___ accept the offer.", options:["am / will","were / would","was / will","be / would"], answer:1, feedback:"'If I were you' is the standard form (not 'was') in formal Second Conditional.", example:"If I were you, I would accept. If she were here, she would agree." },
+
+  // ─── B2: Future Perfect ──────────────────────────────────────────────────
+  { level:"B2", tense:"Future Perfect", q:"By next year, she ___ her degree.", options:["will finish","will have finished","finishes","has finished"], answer:1, feedback:"Future Perfect = will have + past participle. It describes an action completed before a future point.", example:"By Monday, I will have finished. By 2026, they will have built the bridge." },
+  { level:"B2", tense:"Future Perfect", q:"By the time you arrive, I ___ dinner.", options:["cook","will cook","will have cooked","am cooking"], answer:2, feedback:"'By the time' + Future Perfect signals completion before a future moment.", example:"By the time you arrive, I will have cooked dinner." },
+
+  // ─── B2: Used to / Would ─────────────────────────────────────────────────
+  { level:"B2", tense:"Used to / Would", q:"When I was young, I ___ play outside every day.", options:["used to","would","both are correct","neither is correct"], answer:2, feedback:"Both 'used to' and 'would' describe past habits. 'Used to' also covers past states; 'would' is for repeated actions only.", example:"I used to play outside. I would play outside every day." },
+  { level:"B2", tense:"Used to / Would", q:"She ___ be very shy, but now she's confident.", options:["would","used to","was used to","is used to"], answer:1, feedback:"Use 'used to' (not 'would') for past states that are no longer true.", example:"She used to be shy. He used to live in London." },
+
+  // ─── C1: Mixed Conditionals ──────────────────────────────────────────────
+  { level:"C1", tense:"Mixed Conditional", q:"If I ___ harder at school, I ___ have a better job right now.", options:["worked / will","had worked / would have","had worked / would","worked / would"], answer:2, feedback:"Mixed Conditional: past unreal condition (had + p.p.) + present result (would + base verb). 'Right now' confirms the result is present, not past — so use 'would', not 'would have'.", example:"If I had studied more, I would have a better job now. If she had taken that course, she would speak better today." },
+  { level:"C1", tense:"Mixed Conditional", q:"If she ___ more confident, she ___ applied for the role.", options:["were / would have","was / will have","had been / would","is / would have"], answer:0, feedback:"The reverse mixed conditional: present-unreal if-clause + hypothetical past result.", example:"If she were braver, she would have applied." },
+
+  // ─── C1: Third Conditional ───────────────────────────────────────────────
+  { level:"C1", tense:"3rd Conditional", q:"If they ___ the map, they ___ lost.", options:["had / would have gotten","had had / wouldn't have gotten","have / won't have","had / wouldn't get"], answer:1, feedback:"Third Conditional: If + Past Perfect, would have + past participle. It expresses imaginary past situations.", example:"If they had had a map, they wouldn't have gotten lost." },
+  { level:"C1", tense:"3rd Conditional", q:"She ___ the job if she ___ better at the interview.", options:["would have got / had performed","will get / performs","got / would perform","would get / had performed"], answer:0, feedback:"Third Conditional imagines a different past outcome.", example:"She would have got the job if she had performed better." },
+
+  // ─── C1: Subjunctive ─────────────────────────────────────────────────────
+  { level:"C1", tense:"Subjunctive", q:"It's essential that he ___ on time.", options:["is","be","was","were"], answer:1, feedback:"Formal subjunctive uses the base verb (be, not is/was) after expressions of necessity/recommendation.", example:"It's essential that he be here. We recommend that she attend." },
+  { level:"C1", tense:"Subjunctive", q:"The committee recommended that she ___ the position.", options:["accepts","accept","accepted","would accept"], answer:1, feedback:"After 'recommend/suggest/insist that', use the base verb (subjunctive).", example:"They insisted that he leave. She recommended that I apply." },
+  { level:"C1", tense:"Subjunctive", q:"I wish I ___ taller.", options:["am","was","were","be"], answer:2, feedback:"After 'wish', use 'were' for all subjects (formal subjunctive) to express an unreal present wish.", example:"I wish I were taller. She wishes she were here." },
+
+  // ─── C1: Passive Voice (Complex Tenses) ──────────────────────────────────
+  { level:"C1", tense:"Passive Voice", q:"The report ___ by the team last night.", options:["was written","is written","has been writing","wrote"], answer:0, feedback:"Simple Past Passive = was/were + past participle. The agent can be added with 'by'.", example:"The report was written by the team. The cake was made by her." },
+  { level:"C1", tense:"Passive Voice", q:"The project ___ by next Friday.", options:["will finish","will be finished","is finishing","was finished"], answer:1, feedback:"Future Passive = will be + past participle.", example:"The report will be submitted. The work will be completed." },
+  { level:"C1", tense:"Passive Voice", q:"The results ___ announced yet.", options:["haven't been","hasn't been","weren't been","didn't be"], answer:0, feedback:"Present Perfect Passive = have/has + been + past participle.", example:"The results haven't been announced. The decision has been made." },
+
+  // ─── C1: Reporting / Backshifting ────────────────────────────────────────
+  { level:"C1", tense:"Reported Speech", q:"She said she ___ tired.", options:["is","was","has been","were"], answer:1, feedback:"In reported speech, the present tense (is) shifts back to past (was) when the reporting verb is past.", example:"She said she was tired. He told me he had finished." },
+  { level:"C1", tense:"Reported Speech", q:"He told me he ___ to call me.", options:["will","would","shall","had"], answer:1, feedback:"'Will' shifts to 'would' in reported speech when the main verb is past.", example:"He said he would call. She promised she would come." },
+  { level:"C1", tense:"Reported Speech", q:"She asked me if I ___ the book.", options:["have read","had read","read","was reading"], answer:1, feedback:"Present Perfect (have read) shifts to Past Perfect (had read) in reported speech.", example:"She asked if I had read the book. He wanted to know if she had left." },
+
+  // ─── C2: Advanced Mixed Conditionals & Inversion ─────────────────────────
+  { level:"C2", tense:"Conditional Inversion", q:"___ I known you were coming, I would have prepared dinner.", options:["If","Did","Had","Should"], answer:2, feedback:"Formal conditional inversion: 'Had I known' = 'If I had known'. Omit 'if' and invert subject/auxiliary.", example:"Had I known, I would have come. Were she here, she would agree." },
+  { level:"C2", tense:"Conditional Inversion", q:"___ she fail the exam, she would have to retake it next semester.", options:["Has","Were","Should","Had"], answer:2, feedback:"'Should she fail' = 'If she happened to fail' — a formal inversion expressing a remote future possibility. Unlike 'Were she to fail', 'Should she fail' uses the base verb directly after the subject.", example:"Should he arrive late, please start without him. Should it rain, we'll move the event inside." },
+  { level:"C2", tense:"Conditional Inversion", q:"___ it not for your help, I would have failed.", options:["Was","Were","Had","If"], answer:1, feedback:"'Were it not for' is a formal fixed expression replacing 'If it were not for'. 'Had' would require 'been' to be grammatically complete ('Had it not been for').", example:"Were it not for her support, he would have quit. Were it not for the delay, we would have finished on time." },
+
+  // ─── C2: Perfect Modals ───────────────────────────────────────────────────
+  { level:"C2", tense:"Perfect Modals", q:"She ___ left already — the lights are off.", options:["must leave","must have left","should leave","had to leave"], answer:1, feedback:"'Must have + past participle' expresses a logical deduction about a past event.", example:"She must have left. He must have forgotten." },
+  { level:"C2", tense:"Perfect Modals", q:"You ___ told me! I was so worried.", options:["should have","must have","could","ought"], answer:0, feedback:"'Should have + past participle' expresses regret or criticism about a past action not taken.", example:"You should have called. She should have studied more." },
+  { level:"C2", tense:"Perfect Modals", q:"He ___ taken a different route — he arrived so fast!", options:["might have","must have","should have","needn't have"], answer:0, feedback:"'Might have + past participle' expresses speculation — a past possibility we're not certain about.", example:"He might have taken a shortcut. She might have forgotten." },
+  { level:"C2", tense:"Perfect Modals", q:"You ___ bought so many gifts — it was too much!", options:["needn't have","mustn't have","shouldn't","didn't need"], answer:0, feedback:"'Needn't have + past participle' means the action happened but wasn't necessary.", example:"You needn't have rushed. She needn't have spent so much." },
+
+  // ─── C2: Cleft Sentences & Emphasis ─────────────────────────────────────
+  { level:"C2", tense:"Cleft & Emphasis", q:"It ___ John who broke the window.", options:["was","were","has been","had been"], answer:0, feedback:"Cleft sentences (It + be + focus element + relative clause) use 'was' in most past contexts for emphasis.", example:"It was John who broke it. It was the storm that caused the damage." },
+  { level:"C2", tense:"Cleft & Emphasis", q:"What she needs ___ more time, not more advice.", options:["are","is","were","was"], answer:1, feedback:"In a cleft with 'What + subject clause', the verb agrees with the complement. 'More time' is singular → 'is'.", example:"What he wants is a promotion. What they need is support." },
+
+  // ─── Extra Mixed Questions across levels ─────────────────────────────────
+  { level:"A1", tense:"Simple Present", q:"Water ___ at 100 degrees Celsius.", options:["boiled","boil","boils","is boiling"], answer:2, feedback:"Scientific facts use Simple Present — they are always true.", example:"Water boils. The Earth revolves around the Sun." },
+  { level:"A2", tense:"Present Continuous", q:"We ___ a new system this quarter.", options:["implement","are implementing","implemented","have implemented"], answer:1, feedback:"Present Continuous can describe temporary plans or changes happening around now.", example:"We are implementing a new process. The team is working on updates." },
+  { level:"B1", tense:"Simple Past", q:"The meeting ___ at 9 AM sharp last Monday.", options:["begins","is beginning","began","has begun"], answer:2, feedback:"'Last Monday' is a definite, completed past moment — use Simple Past.", example:"The meeting began at 9 last Monday. He arrived at noon yesterday." },
+  { level:"B1", tense:"Present Perfect", q:"This is the best code she ___ ever ___.", options:["has / write","has / written","have / written","had / written"], answer:1, feedback:"Superlative + 'ever' → Present Perfect to describe an outstanding experience.", example:"This is the best app she has ever built." },
+  { level:"B2", tense:"Future Perfect Continuous", q:"By December, I ___ here for ten years.", options:["will work","will have been working","am working","will be working"], answer:1, feedback:"Future Perfect Continuous = will have been + verb-ing. It emphasizes duration up to a future point.", example:"By then, I will have been working here for a decade." },
+  { level:"B1", tense:"1st Conditional", q:"If the server ___ down, we ___ lose data.", options:["goes / will","goes / would","go / will","went / will"], answer:0, feedback:"First Conditional with 'if + present simple, will + base verb' for likely technical scenarios.", example:"If the server goes down, we will lose data." },
+  { level:"B2", tense:"2nd Conditional", q:"If I ___ the CEO, I ___ change the company culture.", options:["am / will","were / would","was / would","were / will"], answer:1, feedback:"Hypothetical leadership scenario: 'If I were + would + base verb'.", example:"If I were the CEO, I would modernize the workflow." },
+  { level:"C1", tense:"3rd Conditional", q:"If the team ___ the deadline, the client ___ the contract.", options:["missed / canceled","had missed / would have canceled","has missed / cancels","missed / would cancel"], answer:1, feedback:"Third Conditional for an imagined past: If + Past Perfect, would have + past participle.", example:"If they had missed the deadline, the client would have canceled." },
+  { level:"A2", tense:"Future: will", q:"The tech talk ___ start in five minutes.", options:["going to","will","is","are"], answer:1, feedback:"'Will' is used for schedules or imminent events that are certain.", example:"The meeting will start soon. The train will arrive at 3." },
+  { level:"B2", tense:"Present Perfect Continuous", q:"Our dev team ___ on this API for three weeks.", options:["worked","works","has been working","had worked"], answer:2, feedback:"Present Perfect Continuous emphasizes the ongoing effort over a period up to the present.", example:"The team has been working on the API for three weeks." },
+  { level:"C2", tense:"Perfect Modals", q:"The bug ___ introduced in the last deployment.", options:["must be","must have been","should be","had to be"], answer:1, feedback:"Past passive perfect modal: 'must have been + past participle' for logical deduction about a past passive event.", example:"The bug must have been introduced in the last deployment." },
+  { level:"C1", tense:"Passive Voice", q:"The new feature ___ before the release.", options:["should test","should be tested","should have tested","should been tested"], answer:1, feedback:"Modal + passive = modal + be + past participle. This is a professional recommendation structure.", example:"The code should be reviewed. The report must be submitted." },
+  { level:"B1", tense:"Past Perfect", q:"By the time the sprint ended, we ___ all the tickets.", options:["closed","close","had closed","have closed"], answer:2, feedback:"Past Perfect shows an action completed before another past event (sprint ending).", example:"By the time the sprint ended, we had closed all tickets." },
+  { level:"A2", tense:"Past Continuous", q:"She ___ a presentation while the manager ___ notes.", options:["was giving / was taking","gave / took","is giving / takes","gives / is taking"], answer:0, feedback:"Two simultaneous past actions use Past Continuous for both.", example:"She was talking while he was typing." },
+  { level:"B2", tense:"Used to / Would", q:"Back then, developers ___ write documentation by hand.", options:["are used to","used to","would use to","get used to"], answer:1, feedback:"'Used to + base verb' describes a past habit or state that no longer exists.", example:"Developers used to write documentation manually." },
+  { level:"C1", tense:"Subjunctive", q:"Management proposed that the meeting ___ postponed.", options:["is","be","was","were"], answer:1, feedback:"After 'propose/suggest/recommend that', use the base verb (bare subjunctive) regardless of subject.", example:"They proposed that the launch be postponed." },
+  { level:"C2", tense:"Conditional Inversion", q:"___ you need any assistance, please contact support.", options:["If","Were","Should","Had"], answer:0, feedback:"'If you need any assistance' is the natural, correct form here. While 'Should you need' is a valid formal inversion, 'If' is the standard connector for conditional clauses and is always grammatically correct.", example:"If you need help, contact support. If you have questions, let us know." },
+  { level:"B1", tense:"Future Continuous", q:"At 2 PM during the conference, our CTO ___ the new roadmap — please don't interrupt.", options:["presents","will present","will be presenting","is presenting"], answer:2, feedback:"Future Continuous emphasizes an action actively in progress at a specific future moment. 'At 2 PM during the conference' pins the exact moment, making 'will be presenting' the most precise choice.", example:"At 2 PM, she will be presenting the results. During the event, he will be leading the workshop." },
+  { level:"B2", tense:"Future Perfect", q:"By the time this course ends, you ___ all English tenses.", options:["learn","will learn","will have learned","are learning"], answer:2, feedback:"Future Perfect: 'By the time + present simple' triggers 'will have + past participle'.", example:"By the time the course ends, you will have mastered all tenses!" },
+
+  // ─── More A2 ──────────────────────────────────────────────────────────────
+  { level:"A2", tense:"Simple Past", q:"I ___ to the gym three times last week.", options:["go","gone","went","have gone"], answer:2, feedback:"'Last week' is a closed, finished period — use Simple Past, not Present Perfect.", example:"I went to the gym last week. She visited her parents last month." },
+  { level:"A2", tense:"Future: going to", q:"___ they ___ buy a new laptop this month?", options:["Are / going to","Is / going to","Do / going to","Will / going to"], answer:0, feedback:"Question form: Are + subject + going to + base verb? For 'they', use 'Are'.", example:"Are they going to buy it? Is she going to come?" },
+
+  // ─── More B1 ──────────────────────────────────────────────────────────────
+  { level:"B1", tense:"Present Perfect", q:"He ___ three cups of coffee today.", options:["drinks","drank","has drunk","had drunk"], answer:2, feedback:"'Today' (still current) + quantity → Present Perfect to connect past to present.", example:"He has drunk three cups today. She has sent five emails." },
+  { level:"B1", tense:"Present Perfect", q:"___ she ___ the new framework yet?", options:["Did / try","Has / tried","Have / tried","Did / tried"], answer:1, feedback:"'Yet' in questions → Present Perfect. 'She' → 'has'.", example:"Has she tried it yet? Have they finished yet?" },
+
+  // ─── More B2 ──────────────────────────────────────────────────────────────
+  { level:"B2", tense:"Past Perfect Continuous", q:"He looked tired because he ___ all day.", options:["had worked","has been working","had been working","was working"], answer:2, feedback:"Past Perfect Continuous explains why something was true in the past (looked tired = result of prolonged action).", example:"He had been working all day, so he looked tired." },
+  { level:"B2", tense:"Present Perfect Continuous", q:"Why are your eyes red? ___ you ___?", options:["Did / cry","Have / been crying","Are / crying","Had / been crying"], answer:1, feedback:"Present Perfect Continuous explains a visible present result of a recent past action.", example:"Have you been crying? Has he been running?" },
+
+  // ─── More C1 ──────────────────────────────────────────────────────────────
+  { level:"C1", tense:"3rd Conditional", q:"We ___ the contract if the client ___ on time.", options:["would have signed / had paid","would sign / paid","would have signed / paid","would sign / had paid"], answer:0, feedback:"Third Conditional: main clause (would have + p.p.) + if-clause (had + p.p.).", example:"We would have signed if they had paid." },
+  { level:"C1", tense:"Reported Speech", q:"'I will finish the report tomorrow.' → She said she ___ the report the next day.", options:["will finish","would finish","finishes","finished"], answer:1, feedback:"'Will' → 'would' in reported speech; 'tomorrow' → 'the next day'.", example:"She said she would finish it the next day." },
+  { level:"C1", tense:"Passive Voice", q:"The system ___ updated overnight.", options:["was being","has been","had","is been"], answer:1, feedback:"Present Perfect Passive: has/have + been + past participle. This reports a recent completed action.", example:"The system has been updated. The data has been backed up." },
+
+  // ─── More C2 ──────────────────────────────────────────────────────────────
+  { level:"C2", tense:"Perfect Modals", q:"The data ___ corrupted during the transfer.", options:["might have been","must be","could be","should have"], answer:0, feedback:"Past passive speculation: 'might have been + past participle' for an uncertain past passive event.", example:"The data might have been corrupted. The file might have been deleted." },
+  { level:"C2", tense:"Cleft & Emphasis", q:"It ___ the lack of testing ___ caused the bug.", options:["is / which","was / that","were / which","had been / that"], answer:1, feedback:"Cleft sentence for past emphasis: 'It was + [cause] + that + [result]'.", example:"It was the update that broke the system. It was John that found the bug." },
+  { level:"C2", tense:"Conditional Inversion", q:"___ I been informed earlier, I would have taken action.", options:["If","Should","Had","Were"], answer:2, feedback:"'Had I been informed' = 'If I had been informed' — formal past counterfactual inversion.", example:"Had we known, we would have responded. Had she called, I would have answered." },
+
+  // ─── Restored questions ───────────────────────────────────────────────────
+  { level:"B1", tense:"Future Continuous", q:"This time next week, she ___ on a plane to London.", options:["will fly","will be flying","is flying","flies"], answer:1, feedback:"Future Continuous = will be + verb-ing. 'This time next week' pins a future moment when the action will be in progress.", example:"This time tomorrow, I will be sitting on the plane. This time next week, she will be landing in London." },
+  { level:"B2", tense:"Future Perfect", q:"By the end of this quarter, the team ___ all the milestones.", options:["will complete","completes","will have completed","has completed"], answer:2, feedback:"Future Perfect = will have + past participle. 'By the end of' signals a future deadline before which the action will be fully completed.", example:"By Friday, we will have delivered the project. By the end of the month, she will have closed ten deals." },
+  { level:"B2", tense:"2nd Conditional", q:"If our servers ___ faster, the app ___ crash so often.", options:["are / won't","were / wouldn't","were / won't","are / wouldn't"], answer:1, feedback:"Second Conditional: If + Simple Past, would + base verb. It imagines an unreal present situation and its hypothetical result.", example:"If our servers were faster, the app wouldn't crash. If she had more time, she would learn Python." },
+  { level:"C1", tense:"3rd Conditional", q:"If the QA team ___ that bug earlier, we ___ the release.", options:["caught / wouldn't have delayed","had caught / wouldn't have delayed","have caught / won't delay","caught / wouldn't delay"], answer:1, feedback:"Third Conditional: If + Past Perfect, would have + past participle. It imagines a different outcome for a completed past event.", example:"If they had caught the bug, we wouldn't have delayed. If she had reviewed the code, the error wouldn't have appeared." },
+  { level:"C1", tense:"Passive Voice", q:"The annual report ___ by the board before the press conference.", options:["was approving","had approved","was approved","has approved"], answer:2, feedback:"Simple Past Passive = was/were + past participle. The focus is on the report (object), not on who approved it.", example:"The contract was signed yesterday. The update was deployed last night." },
+  { level:"B1", tense:"Present Perfect vs. Past", q:"___ you ___ the new version of the software yet?", options:["Did / try","Have / tried","Have / try","Did / tried"], answer:1, feedback:"'Yet' in questions always triggers Present Perfect — it asks about an action expected to happen up to now, with no specific past time given.", example:"Have you tried the update yet? Has she reviewed the proposal yet?" },
+  { level:"B2", tense:"Past Perfect Continuous", q:"The system ___ for six hours before the engineers found the problem.", options:["was failing","had been failing","has been failing","failed"], answer:1, feedback:"Past Perfect Continuous = had been + verb-ing. It shows a continuous action that was already in progress before another past event (engineers finding the problem).", example:"The server had been overloading for hours before it crashed. She had been waiting for the callback before she gave up." },
+  { level:"A2", tense:"Simple Past", q:"The developer ___ the bug in less than an hour yesterday.", options:["fixes","has fixed","fixed","is fixing"], answer:2, feedback:"'Yesterday' marks a specific, completed past moment — use Simple Past. Regular verb: add -ed.", example:"She fixed the bug yesterday. He deployed the update last night." },
+];
+
+
+// ─── State ──────────────────────────────────────────────────────────────────
+let questions = [];
+let current = 0;
+let score = 0;
+let answered = false;
+let activeLevel = "ALL";
+let answeredCorrectly = [];
+
+function getLevelColor(level) {
+  const map = { A1:"#4ade80",A2:"#86efac",B1:"#60a5fa",B2:"#93c5fd",C1:"#f472b6",C2:"#e879f9" };
+  return map[level] || "#e8c56d";
+}
+
+function shuffle(arr) {
+  let a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initQuiz() {
+  questions = activeLevel === "ALL"
+    ? shuffle(ALL_QUESTIONS)
+    : shuffle(ALL_QUESTIONS.filter(q => q.level === activeLevel));
+  current = 0; score = 0; answered = false; answeredCorrectly = [];
+  document.getElementById("resultsScreen").classList.remove("show");
+  renderQuestion();
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = questions.length;
+  const pct = total ? (current / total) * 100 : 0;
+  document.getElementById("progressBar").style.width = pct + "%";
+  document.getElementById("progressText").textContent = `${current} / ${total}`;
+  document.getElementById("scoreText").textContent = `✓ ${score}`;
+}
+
+function renderQuestion() {
+  const area = document.getElementById("questionArea");
+  if (current >= questions.length) { showResults(); return; }
+  const q = questions[current];
+  const letters = ["A","B","C","D"];
+  const color = getLevelColor(q.level);
+
+  area.innerHTML = `
+    <div class="question-card" id="qCard">
+      <div class="q-meta">
+        <span class="q-level-badge" style="background:${color};color:#0d0f14">${q.level}</span>
+        <span class="q-number">#${current + 1} of ${questions.length}</span>
+      </div>
+      <div class="question-text">${formatQuestion(q.q)}</div>
+      <div class="options" id="options">
+        ${q.options.map((opt, i) => `
+          <button class="option-btn" onclick="selectAnswer(${i})" id="opt${i}">
+            <span class="opt-letter">${letters[i]}</span>
+            ${opt}
+          </button>
+        `).join("")}
+      </div>
+      <div class="feedback-box" id="feedbackBox">
+        <div class="feedback-title" id="feedbackTitle"></div>
+        <div class="feedback-content" id="feedbackContent"></div>
+        <div class="feedback-example" id="feedbackExample"></div>
+      </div>
+      <div class="ai-feedback-wrap" id="aiFeedbackWrap">
+        <div class="ai-label">AI Mentor Insight</div>
+        <div class="ai-text" id="aiText">Generating personalized feedback...</div>
+      </div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+        ${current + 1 < questions.length ? "Next Question →" : "See Results →"}
+      </button>
+    </div>
+  `;
+  answered = false;
+}
+
+function formatQuestion(text) {
+  return text.replace(/___/g, '<span class="blank">___</span>');
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const isCorrect = idx === q.answer;
+  if (isCorrect) score++;
+  answeredCorrectly[current] = isCorrect;
+
+  // Style buttons
+  q.options.forEach((_, i) => {
+    const btn = document.getElementById(`opt${i}`);
+    btn.disabled = true;
+    if (i === q.answer) btn.classList.add("correct");
+    else if (i === idx && !isCorrect) btn.classList.add("wrong");
+  });
+
+  // Show static feedback
+  const fb = document.getElementById("feedbackBox");
+  const title = document.getElementById("feedbackTitle");
+  const content = document.getElementById("feedbackContent");
+  const ex = document.getElementById("feedbackExample");
+  fb.classList.add("show", isCorrect ? "correct-fb" : "wrong-fb");
+  title.textContent = isCorrect ? "✓ Correct!" : "✗ Not quite";
+  content.textContent = q.feedback;
+  ex.textContent = q.example ? "→ " + q.example : "";
+
+  document.getElementById("nextBtn").classList.add("show");
+
+  // AI Feedback
+  document.getElementById("aiFeedbackWrap").classList.add("show");
+  getAIFeedback(q, q.options[idx], isCorrect);
+  updateProgress();
+}
+
+async function getAIFeedback(q, chosen, isCorrect) {
+  const aiText = document.getElementById("aiText");
+  const correctAnswer = q.options[q.answer];
+  const prompt = isCorrect
+    ? `An English learner (IT professional, intermediate level) just answered a grammar question correctly.
+Question: "${q.q}"
+Tense: ${q.tense} | CEFR Level: ${q.level}
+Correct answer chosen: "${correctAnswer}"
+Give a short (2-3 sentences) encouraging insight that: reinforces WHY this tense is used here and offers one practical example in a tech/work context. Be warm, direct, and avoid repeating the static feedback already shown.`
+    : `An English learner (IT professional, intermediate level) answered a grammar question incorrectly.
+Question: "${q.q}"
+Tense: ${q.tense} | CEFR Level: ${q.level}
+They chose: "${chosen}" — Correct answer: "${correctAnswer}"
+Give a short (2-3 sentences) supportive correction that: explains the mistake clearly, gives the rule in plain language, and provides one practical example from a tech/work context. Be encouraging, not discouraging.`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = data.content?.map(b => b.text || "").join("") || "Feedback not available.";
+    aiText.textContent = text.trim();
+  } catch (e) {
+    aiText.textContent = "AI feedback unavailable. Check your connection.";
+  }
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= questions.length) { showResults(); return; }
+  renderQuestion();
+  updateProgress();
+}
+
+function showResults() {
+  document.getElementById("questionArea").innerHTML = "";
+  document.getElementById("captureScreen").classList.add("show");
+  updateProgress();
+}
+
+function submitLead() {
+  const name    = document.getElementById("leadName").value.trim();
+  const email   = document.getElementById("leadEmail").value.trim();
+  const phone   = document.getElementById("leadPhone").value.trim();
+
+  if (!name || !email || !phone) {
+    alert("Please fill in all fields to receive your diagnostic.");
+    return;
+  }
+
+  // Hide capture, show results
+  document.getElementById("captureScreen").classList.remove("show");
+
+  // ── Build per-level stats ──────────────────────────────────────────────
+  const levels = ["A1","A2","B1","B2","C1","C2"];
+  const levelColors = { A1:"#4ade80", A2:"#86efac", B1:"#60a5fa", B2:"#93c5fd", C1:"#f472b6", C2:"#e879f9" };
+  const stats = {};
+  levels.forEach(l => stats[l] = { total:0, correct:0 });
+
+  questions.forEach((q, i) => {
+    if (stats[q.level]) {
+      stats[q.level].total++;
+      // We stored per-question correctness in answeredCorrectly array
+      if (answeredCorrectly[i]) stats[q.level].correct++;
+    }
+  });
+
+  // ── Overall score ──────────────────────────────────────────────────────
+  const total = questions.length;
+  const pct   = Math.round((score / total) * 100);
+
+  // ── Determine overall level ────────────────────────────────────────────
+  let overallLevel = "A1", overallDesc = "";
+  // Find highest level where pct >= 60%
+  for (let i = levels.length - 1; i >= 0; i--) {
+    const l = levels[i];
+    const s = stats[l];
+    if (s.total > 0 && Math.round((s.correct / s.total) * 100) >= 60) {
+      overallLevel = l;
+      break;
+    }
+  }
+
+  const levelDescs = {
+    A1: "You're building your foundation. Focus on the essential tenses — present, past and future — and you'll progress quickly.",
+    A2: "You have the basics down. The next step is getting comfortable with questions, negatives and past forms in real conversations.",
+    B1: "You have solid command of core tenses. The gap now is using them naturally in professional and fast-paced spoken contexts.",
+    B2: "You're operating at an advanced level. Fine-tuning conditionals, passive voice and perfect aspects will take you to fluency.",
+    C1: "You're close to mastery. The remaining challenge is precision — mixed conditionals, inversion and register control.",
+    C2: "Outstanding. You demonstrate near-native command of English verb tenses across all levels of complexity."
+  };
+  overallDesc = levelDescs[overallLevel];
+
+  // ── Emoji & message ────────────────────────────────────────────────────
+  let emoji = "💪", msg = "Every mistake is a step forward. Keep going!";
+  if (pct >= 90) { emoji = "🏆"; msg = "Exceptional result! You're ready for global opportunities."; }
+  else if (pct >= 75) { emoji = "🎉"; msg = "Great work! You have strong tense command."; }
+  else if (pct >= 60) { emoji = "⭐"; msg = "Good progress! A little more practice will get you there."; }
+
+  // ── Render results ─────────────────────────────────────────────────────
+  document.getElementById("resultsName").textContent = `Hello, ${name}!`;
+  document.getElementById("resultsEmoji").textContent = emoji;
+  document.getElementById("resultsBig").textContent = `${score} / ${total}`;
+  document.getElementById("resultsPct").textContent = `${pct}% correct`;
+  document.getElementById("resultsMsg").textContent = msg;
+
+  // Diagnosis bars
+  const grid = document.getElementById("diagnosisGrid");
+  grid.innerHTML = "";
+  const statusLabel = (p) => {
+    if (p >= 80) return `<span style="color:var(--accent3)">✓ Strong</span>`;
+    if (p >= 60) return `<span style="color:var(--accent)">→ Developing</span>`;
+    return `<span style="color:var(--danger)">✗ To work on</span>`;
+  };
+  levels.forEach(l => {
+    const s = stats[l];
+    if (s.total === 0) return;
+    const p = Math.round((s.correct / s.total) * 100);
+    const row = document.createElement("div");
+    row.className = "diag-row";
+    row.innerHTML = `
+      <span class="diag-level" style="background:${levelColors[l]}">${l}</span>
+      <div class="diag-bar-outer"><div class="diag-bar-inner" style="width:0%;background:${levelColors[l]}" data-width="${p}"></div></div>
+      <span class="diag-pct">${p}%</span>
+      <span class="diag-status">${statusLabel(p)}</span>
+    `;
+    grid.appendChild(row);
+  });
+  // Animate bars after render
+  setTimeout(() => {
+    document.querySelectorAll(".diag-bar-inner").forEach(bar => {
+      bar.style.width = bar.dataset.width + "%";
+    });
+  }, 100);
+
+  // Diagnosis summary box
+  document.getElementById("diagnosisBox").innerHTML = `
+    <div class="diag-headline">🎯 Your current level</div>
+    <div class="diag-level-result">${overallLevel} ${levels.indexOf(overallLevel) < levels.length - 1 ? "→ " + levels[levels.indexOf(overallLevel) + 1] : "— Advanced"}</div>
+    <div class="diag-desc">${overallDesc}</div>
+  `;
+
+  document.getElementById("resultsScreen").classList.add("show");
+
+  // ── Send to Google Sheets ──────────────────────────────────────────────
+  const SHEETS_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+  const levelSummary = levels.map(l => {
+    const s = stats[l];
+    return s.total > 0 ? `${l}: ${s.correct}/${s.total}` : null;
+  }).filter(Boolean).join(" | ");
+
+  fetch(SHEETS_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name, email, phone,
+      score: `${score}/${total}`,
+      percent: `${pct}%`,
+      level: overallLevel,
+      breakdown: levelSummary,
+      date: new Date().toLocaleString("pt-BR")
+    })
+  }).catch(() => {}); // silent fail — data still shows to user
+}
+
+function restartQuiz() {
+  document.getElementById("captureScreen").classList.remove("show");
+  document.getElementById("resultsScreen").classList.remove("show");
+  initQuiz();
+}
+
+// Level buttons
+document.querySelectorAll(".level-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".level-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    activeLevel = btn.dataset.level;
+    initQuiz();
+  });
+});
+
+// Start
+initQuiz();
+</script>
+</body>
+</html>
