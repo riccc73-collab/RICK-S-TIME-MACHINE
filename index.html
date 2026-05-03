@@ -785,6 +785,7 @@ function initQuiz() {
     ? shuffle(ALL_QUESTIONS)
     : shuffle(ALL_QUESTIONS.filter(q => q.level === activeLevel));
   current = 0; score = 0; answered = false; answeredCorrectly = [];
+  document.getElementById("captureScreen").classList.remove("show");
   document.getElementById("resultsScreen").classList.remove("show");
   renderQuestion();
   updateProgress();
@@ -910,12 +911,18 @@ Give a short (2-3 sentences) supportive correction that: explains the mistake cl
 
 function nextQuestion() {
   current++;
-  if (current >= questions.length) { showResults(); return; }
+  if (current >= questions.length) {
+    document.getElementById("questionArea").innerHTML = "";
+    document.getElementById("captureScreen").classList.add("show");
+    updateProgress();
+    return;
+  }
   renderQuestion();
   updateProgress();
 }
 
 function showResults() {
+  // Called only from renderQuestion guard — same behaviour
   document.getElementById("questionArea").innerHTML = "";
   document.getElementById("captureScreen").classList.add("show");
   updateProgress();
